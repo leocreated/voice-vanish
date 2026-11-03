@@ -1,0 +1,81 @@
+plugins { id 'net.fabricmc.fabric-loom-remap' version '1.17.20' }
+version = project.mod_version
+group = project.maven_group
+base { archivesName = project.archives_base_name }
+repositories { mavenCentral(); flatDir { dirs 'libs' } }
+loom {
+    splitEnvironmentSourceSets()
+    mods { voicevanish { sourceSet sourceSets.main; sourceSet sourceSets.client } }
+}
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation 'com.k2fsa:sherpa-onnx-jvm:2.0.1'
+    implementation 'com.k2fsa:sherpa-onnx-native-lib-win-x64:2.0.1'
+    include 'com.k2fsa:sherpa-onnx-jvm:2.0.1'
+    include 'com.k2fsa:sherpa-onnx-native-lib-win-x64:2.0.1'
+    implementation 'io.github.givimad:whisper-jni:1.7.1'
+    include 'io.github.givimad:whisper-jni:1.7.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    if (project.hasProperty('compatDir')) modRuntimeOnly fileTree(dir: project.property('compatDir'), include: '*.jar')
+}
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') { expand 'version': project.version }
+    from('distribution') {
+        include 'APACHE-2.0.txt', 'ONNXRUNTIME-LICENSE.txt', 'ONNXRUNTIME-NOTICES.txt', 'THIRD-PARTY-NOTICES-0.1.1.txt',
+                'THIRD-PARTY-NOTICES-0.1.2.txt', 'THIRD-PARTY-NOTICES-0.1.3.txt', 'WHISPER-LICENSE.txt', 'WHISPER-CPP-LICENSE.txt'
+        into 'META-INF/voicevanish-licenses'
+    }
+}
+tasks.withType(JavaCompile).configureEach { options.release = 21; options.encoding = 'UTF-8' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+test { useJUnitPlatform() }
+fabricApi.configureTests {
+    createSourceSet = true
+    modId = 'voicevanish-test'
+    enableGameTests = false
+    enableClientGameTests = true
+    eula = false
+}
+loom.runs {
+    replayProbe {
+        client()
+        source sourceSets.gametest
+        runDir 'build/run/clientGameTest'
+        if (project.hasProperty('replayFixture')) vmArg "-Dvoicevanish.replayProbe=${project.property('replayFixture')}"
+    }
+}
+tasks.named('runReplayProbe').configure {
+    doFirst {
+        if (!project.hasProperty('replayFixture')) throw new GradleException('Pass -PreplayFixture=<probe.json>')
+        def options = file('build/run/clientGameTest/options.txt')
+        if (!options.exists()) { options.parentFile.mkdirs(); options.text = 'onboardAccessibility:true\nstartedCleanly:true\n' }
+        file(project.property('replayFixture').toString() + '.result.json').delete()
+    }
+    doLast {
+        def result = file(project.property('replayFixture').toString() + '.result.json')
+        if (!result.exists() || !new groovy.json.JsonSlurper().parse(result).passed) throw new GradleException('Replay probe did not pass; inspect result JSON and latest.log')
+    }
+}
+tasks.register('speechSmoke', JavaExec) {
+    dependsOn clientClasses
+    classpath = sourceSets.client.runtimeClasspath
+    mainClass = 'dev.leo.voicevanish.client.SpeechProbe'
+    if (project.hasProperty('speechModel')) {
+        args project.property('speechModel'), project.property('speechWav'),
+                project.findProperty('speechExpected') ?: '', project.property('speechCheckModel')
+    }
+}
+
+loom.runs.configureEach {
+    if (project.hasProperty('speechModel') && project.hasProperty('speechCheckModel')) {
+        vmArg "-Dvoicevanish.testSpeechModel=${project.property('speechModel')}"
+        vmArg "-Dvoicevanish.testCheckModel=${project.property('speechCheckModel')}"
+        vmArg "-Dvoicevanish.testSpeechWav=${project.property('speechWav')}"
+        if(project.hasProperty('speechExpected')) vmArg "-Dvoicevanish.testSpeechExpected=${project.property('speechExpected')}"
+    }
+}

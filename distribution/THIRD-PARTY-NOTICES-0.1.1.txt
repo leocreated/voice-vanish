@@ -1,0 +1,26 @@
+VOICE VANISH 0.1.1 THIRD-PARTY COMPONENTS
+
+sherpa-onnx JVM and Windows x64 JNI/native distribution, v2.0.1
+Copyright the sherpa-onnx authors, Xiaomi Corporation and contributors.
+https://github.com/k2-fsa/sherpa-onnx/tree/v2.0.1
+Apache License 2.0, included as APACHE-2.0.txt.
+Official release libraries are nested in the production mod JAR. Fabric Loom
+adds loading metadata to those JARs; their classes and native binaries are unchanged.
+https://github.com/k2-fsa/sherpa-onnx/releases/tag/v2.0.1
+
+English streaming Zipformer, 2023-06-26, k2-fsa / csukuangfj / Zengwei
+https://huggingface.co/csukuangfj/sherpa-onnx-streaming-zipformer-en-2023-06-26
+https://huggingface.co/Zengwei/icefall-asr-librispeech-streaming-zipformer-2023-05-17
+Model card declares Apache License 2.0. Selected official int8 encoder and
+joiner, float decoder, and tokens are unmodified. bpe.vocab is exported from
+the supplied SentencePiece bpe.model; inference creates Minecraft hotwords.
+Model archive SHA256: 639e25b578e9e997131402199419c13a941f8e4e198e2da1ce57dbf5cf401282
+
+ONNX Runtime, Microsoft Corporation, included in the official native JAR.
+https://github.com/microsoft/onnxruntime
+MIT license in ONNXRUNTIME-LICENSE.txt; dependency notices in ONNXRUNTIME-NOTICES.txt.
+
+Minecraft, Fabric, Essential and Flashback remain their authors' projects.
+Minecraft is not included. The Prism pack uses official Modrinth downloads
+for Fabric API, Essential and Flashback. Block names originate in Minecraft
+1.21.4 English assets. Vosk and the Kroko model are not in this update.

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "voicevanish",
+  "version": "${version}",
+  "name": "Voice Vanish",
+  "description": "Say a specific block name and ban it worldwide. Private three-player prototype.",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.leo.voicevanish.VoiceVanish"],
+    "client": ["dev.leo.voicevanish.client.VoiceVanishClient"]
+  },
+  "mixins": ["voicevanish.mixins.json"],
+  "depends": { "fabricloader": ">=0.16.10", "minecraft": "~1.21.4", "java": ">=21", "fabric-api": "*" }
+}

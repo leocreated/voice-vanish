@@ -1,0 +1,24 @@
+VOICE VANISH 0.1.2 THIRD-PARTY COMPONENTS
+
+The sherpa-onnx / Zipformer / ONNX Runtime components and attribution remain
+as documented in THIRD-PARTY-NOTICES-0.1.1.txt, also included in this package.
+
+WhisperJNI 1.7.1, Miguel Alvarez Diez / GiviMAD and contributors
+https://github.com/GiviMAD/whisper-jni
+https://repo.maven.apache.org/maven2/io/github/givimad/whisper-jni/1.7.1/
+Apache License 2.0, included as APACHE-2.0.txt. Fabric Loom adds nested loading
+metadata to the official JAR; library classes and native binaries are unchanged.
+Upstream JAR SHA256: 4b6c6a55c44c2163d363c3ec37597431d33260df30c3b12a07b340cdb5b0f19f
+
+whisper.cpp, Georgi Gerganov and contributors
+https://github.com/ggml-org/whisper.cpp
+Included in WhisperJNI's native distribution. MIT license: WHISPER-CPP-LICENSE.txt.
+
+Whisper base.en weights, OpenAI
+https://github.com/openai/whisper
+https://huggingface.co/ggerganov/whisper.cpp
+Unmodified ggml-base.en.bin conversion of the English base model, MIT license:
+WHISPER-LICENSE.txt. Model SHA256:
+a03779c86df3323075f5e796cb2ce5029f00ec8869eee3fdfb897afe36c6d002
+
+All inference happens locally. No cloud speech service or API key is used.

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "voicevanish-test",
+  "version": "1.0.0",
+  "name": "Voice Vanish Integration Tests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": ["dev.leo.voicevanish.test.WorldSmoke", "dev.leo.voicevanish.test.ReplaySmoke", "dev.leo.voicevanish.test.SpeechGameSmoke"],
+    "client": ["dev.leo.voicevanish.test.ReplayStandalone"]
+  }
+}
