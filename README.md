@@ -8,8 +8,7 @@ blocks from loaded chunks, and enforces the bans as more chunks load.
 
 Current version: **0.1.3-prototype**. Target versions are **Minecraft 1.21.4**,
 **Fabric Loader 0.18.4**, **Fabric API 0.119.4+1.21.4**, **Java 21**, and
-**Windows x64** for microphone recognition. This is a separate Minecraft version
-from [PermaPack](https://github.com/leocreated/permapack).
+**Windows x64** for microphone recognition.
 
 ## Recognition and world rules
 
